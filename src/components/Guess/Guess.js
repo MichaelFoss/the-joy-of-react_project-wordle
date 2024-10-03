@@ -1,14 +1,16 @@
 import React from 'react';
+import { checkGuess } from '../../game-helpers';
 
-function Guess({ value }) {
-  const letters = value.split('').map((letter) => ({
+function Guess({ value, answer }) {
+  const letters = checkGuess(value, answer).map(({ letter, status }) => ({
     id: crypto.randomUUID(),
-    letter,
+    letter: letter !== ' ' ? letter : ' ',
+    status: letter !== ' ' ? status : '',
   }));
   return (
     <p className="guess">
-      {letters.map(({ id, letter }) => (
-        <span key={id} className="cell">
+      {letters.map(({ id, letter, status }) => (
+        <span key={id} className={`cell ${status}`}>
           {letter}
         </span>
       ))}
