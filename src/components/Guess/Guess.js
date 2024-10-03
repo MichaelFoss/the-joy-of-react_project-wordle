@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { checkGuess } from '../../game-helpers';
 
-function Guess({ value, answer }) {
+const Guess = memo(({ value, answer }) => {
   const letters = checkGuess(value, answer).map(({ letter, status }) => ({
     id: crypto.randomUUID(),
     letter: letter !== ' ' ? letter : ' ',
@@ -16,6 +16,6 @@ function Guess({ value, answer }) {
       ))}
     </p>
   );
-}
+});
 
 export default Guess;
