@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import GuessResults from '../GuessResults/GuessResults';
 import GuessInput from '../GuessInput';
-import ResultsBanner from '../ResultsBanner';
+import Banner from '../Banner';
+import WinnerBanner from '../WinnerBanner';
+import LoserBanner from '../LoserBanner';
 
 import { sample } from '../../utils';
 import { WORDS } from '../../data';
@@ -14,9 +16,9 @@ console.info({ answer });
 
 // In lieu of Typescript, we can fake an enumeration this way
 const GameState = {
-  WON: 'WON',
-  LOST: 'LOST',
-  PLAYING: 'PLAYING',
+  WON: 'happy',
+  LOST: 'sad',
+  PLAYING: '',
 };
 
 function Game() {
@@ -45,11 +47,13 @@ function Game() {
       <GuessResults guesses={guesses} answer={answer} />
       <GuessInput disabled={isGameOver} onGuess={handleGuess} />
       {isGameOver && (
-        <ResultsBanner
-          answer={answer}
-          isWinner={gameState === GameState.WON}
-          totalGuesses={guesses.length}
-        />
+        <Banner status={gameState}>
+          {gameState === GameState.WON ? (
+            <WinnerBanner totalGuesses={guesses.length} />
+          ) : (
+            <LoserBanner answer={answer} />
+          )}
+        </Banner>
       )}
     </>
   );
