@@ -25,6 +25,8 @@ function GuessInput({ onGuess }) {
         type="text"
         autoFocus
         maxLength={5}
+        pattern="[A-Za-z]{5}"
+        title="Exactly 5 characters with letters only"
         value={guess}
         onChange={handleGuessChange}
       />
