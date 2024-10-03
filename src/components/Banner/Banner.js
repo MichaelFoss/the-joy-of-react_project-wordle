@@ -2,6 +2,7 @@ import React from 'react';
 
 function Banner({
   status,
+  isHiding,
   buttonText = '',
   onButtonClick = undefined,
   children,
@@ -11,8 +12,13 @@ function Banner({
     onButtonClick?.();
   };
 
+  const classNames = [status, 'banner'];
+  if (isHiding) {
+    classNames.push('isHiding');
+  }
+
   return (
-    <div className={`${status} banner`}>
+    <div className={classNames.join(' ')}>
       <div>{children}</div>
       {buttonText && (
         <form onSubmit={handleSubmit}>

@@ -213,7 +213,8 @@ h1 {
   outline-offset: 4px;
 }
 
-.banner {
+.banner,
+.banner.hiding {
   position: fixed;
   left: 0;
   right: 0;
@@ -226,6 +227,16 @@ h1 {
   animation: slideUp 750ms cubic-bezier(0, 0.72, 0.24, 1.02);
   border-radius: 4px 4px 0px 0px;
   will-change: transform;
+}
+
+.banner.isHiding {
+  /*
+  TODO The banner gets repainted
+    after it is completely hidden,
+    causing a flash on the page;
+    look into this at some point.
+  */
+  animation: slideDown 750ms cubic-bezier(0.24, 1.02, 0, 0.72);
 }
 
 .happy.banner {
@@ -287,5 +298,13 @@ h1 {
   }
   to {
     transform: translateY(0%);
+  }
+}
+@keyframes slideDown {
+  from {
+    transform: translateY(0%);
+  }
+  to {
+    transform: translateY(100%);
   }
 }

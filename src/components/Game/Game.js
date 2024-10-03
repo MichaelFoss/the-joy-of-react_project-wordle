@@ -32,6 +32,7 @@ function Game() {
   const [guesses, setGuesses] = useState([]);
   const [gameState, setGameState] = useState(GameState.PLAYING);
   const [keyStates, setKeyStates] = useState(initialKeyStates);
+  const [isResetting, setIsResetting] = useState(false);
 
   const handleGuess = (guess) => {
     // Update the key states
@@ -56,10 +57,16 @@ function Game() {
   };
 
   const handlePlayAgain = () => {
-    setGuesses([]);
-    setGameState(GameState.PLAYING);
-    setAnswer(getNewAnswer());
-    setKeyStates(initialKeyStates);
+    setIsResetting(true);
+    setTimeout(() => {
+      // Only reset the game
+      // after the banner slides out of view
+      setGuesses([]);
+      setGameState(GameState.PLAYING);
+      setAnswer(getNewAnswer());
+      setKeyStates(initialKeyStates);
+      setIsResetting(false);
+    }, 750);
   };
 
   const isGameOver = gameState !== GameState.PLAYING;
@@ -74,6 +81,7 @@ function Game() {
       />
       {isGameOver && (
         <Banner
+          isHiding={isResetting}
           status={gameState}
           buttonText="Play Again"
           onButtonClick={handlePlayAgain}
