@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function GuessInput({ onGuess }) {
+function GuessInput({ disabled = false, onGuess }) {
   const [guess, setGuess] = useState('');
 
   const handleSubmit = (e) => {
@@ -24,6 +24,7 @@ function GuessInput({ onGuess }) {
         id="guess-input"
         type="text"
         autoFocus
+        disabled={disabled}
         maxLength={5}
         pattern="[A-Za-z]{5}"
         title="Exactly 5 characters with letters only"
