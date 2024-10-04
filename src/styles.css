@@ -306,6 +306,15 @@ h1 {
   background-color: #2980b9;
 }
 
+.statList .statTerm {
+  font-weight: bold;
+}
+
+.statList .statDescription {
+  margin-left: 20px;
+  font-style: italic;
+}
+
 .visually-hidden {
   position: absolute;
   overflow: hidden;
