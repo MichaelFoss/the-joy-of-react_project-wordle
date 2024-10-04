@@ -10,10 +10,15 @@ import { getInitialKeyStates, getUpdatedKeyStates } from '../../game-helpers';
 import { WORDS } from '../../data';
 import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
 
-// Pick a random word on every pageload.
-const answer = sample(WORDS);
-// To make debugging easier, we'll log the solution in the console.
-console.info({ answer });
+const getNewAnswer = () => {
+  const answer = sample(WORDS);
+  // To make debugging easier, we'll log the solution in the console.
+  console.info({ answer });
+  return answer;
+};
+
+const initialAnswer = getNewAnswer();
+const initialKeyStates = getInitialKeyStates();
 
 // In lieu of Typescript, we can fake an enumeration this way
 const GameState = {
@@ -23,9 +28,11 @@ const GameState = {
 };
 
 function Game() {
+  const [answer, setAnswer] = useState(initialAnswer);
   const [guesses, setGuesses] = useState([]);
   const [gameState, setGameState] = useState(GameState.PLAYING);
-  const [keyStates, setKeyStates] = useState(getInitialKeyStates());
+  const [keyStates, setKeyStates] = useState(initialKeyStates);
+  const [isResetting, setIsResetting] = useState(false);
 
   const handleGuess = (guess) => {
     // Update the key states
@@ -49,6 +56,19 @@ function Game() {
     }
   };
 
+  const handlePlayAgain = () => {
+    setIsResetting(true);
+    setTimeout(() => {
+      // Only reset the game
+      // after the banner slides out of view
+      setGuesses([]);
+      setGameState(GameState.PLAYING);
+      setAnswer(getNewAnswer());
+      setKeyStates(initialKeyStates);
+      setIsResetting(false);
+    }, 750);
+  };
+
   const isGameOver = gameState !== GameState.PLAYING;
 
   return (
@@ -60,7 +80,12 @@ function Game() {
         onGuess={handleGuess}
       />
       {isGameOver && (
-        <Banner status={gameState}>
+        <Banner
+          isHiding={isResetting}
+          status={gameState}
+          buttonText="Play Again"
+          onButtonClick={handlePlayAgain}
+        >
           {gameState === GameState.WON ? (
             <WinnerBanner totalGuesses={guesses.length} />
           ) : (
