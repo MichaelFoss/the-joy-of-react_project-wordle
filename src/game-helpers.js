@@ -3,6 +3,12 @@
  * solving algorithm!
  */
 
+const GuessStates = {
+  CORRECT: 'correct',
+  INCORRECT: 'incorrect',
+  MISPLACED: 'misplaced',
+};
+
 export function checkGuess(guess, answer) {
   // This constant is a placeholder that indicates we've successfully
   // dealt with this character (it's correct, or misplaced).
@@ -22,7 +28,7 @@ export function checkGuess(guess, answer) {
     if (guessChars[i] === answerChars[i]) {
       result[i] = {
         letter: guessChars[i],
-        status: 'correct',
+        status: GuessStates.CORRECT,
       };
       answerChars[i] = SOLVED_CHAR;
       guessChars[i] = SOLVED_CHAR;
@@ -36,12 +42,12 @@ export function checkGuess(guess, answer) {
       continue;
     }
 
-    let status = 'incorrect';
+    let status = GuessStates.INCORRECT;
     const misplacedIndex = answerChars.findIndex(
       (char) => char === guessChars[i]
     );
     if (misplacedIndex >= 0) {
-      status = 'misplaced';
+      status = GuessStates.MISPLACED;
       answerChars[misplacedIndex] = SOLVED_CHAR;
     }
 
