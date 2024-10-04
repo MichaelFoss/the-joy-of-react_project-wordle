@@ -21,6 +21,9 @@ function GuessInput({ keyStates, disabled = false, onGuess }) {
   };
 
   const handleKeyDown = (e) => {
+    if (disabled) {
+      return;
+    }
     const keyPressed = e.key.toLocaleUpperCase();
     // Do nothing if holding down a modifier key
     if (e.altKey || e.metaKey || e.controlKey) {
