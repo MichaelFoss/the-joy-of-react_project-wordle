@@ -59,3 +59,7 @@ export function checkGuess(guess, answer) {
 
   return result;
 }
+
+export const KEY_ENTER = 'ENTER';
+export const KEY_BACKSPACE = 'BACKSPACE';
+export const KEY_ESCAPE = 'ESCAPE';
