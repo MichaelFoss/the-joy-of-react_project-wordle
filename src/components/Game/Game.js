@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import GuessResults from '../GuessResults/GuessResults';
+import GuessResults from '../GuessResults';
 import GuessInput from '../GuessInput';
 import Banner from '../Banner';
 import WinnerBanner from '../WinnerBanner';
 import LoserBanner from '../LoserBanner';
 
 import { sample } from '../../utils';
+import { getInitialKeyStates, getUpdatedKeyStates } from '../../game-helpers';
 import { WORDS } from '../../data';
 import { NUM_OF_GUESSES_ALLOWED } from '../../constants';
 
@@ -24,11 +25,19 @@ const GameState = {
 function Game() {
   const [guesses, setGuesses] = useState([]);
   const [gameState, setGameState] = useState(GameState.PLAYING);
+  const [keyStates, setKeyStates] = useState(getInitialKeyStates());
 
   const handleGuess = (guess) => {
+    // Update the key states
+    const nextKeyStates = getUpdatedKeyStates(keyStates, guess, answer);
+    setKeyStates(nextKeyStates);
+
+    // Update the guesses
     const nextGuesses = [...guesses];
     nextGuesses.push({ id: crypto.randomUUID(), value: guess });
     setGuesses(nextGuesses);
+
+    // Determine if game has ended
     const isWinner = nextGuesses[nextGuesses.length - 1]?.value === answer;
     if (isWinner) {
       setGameState(GameState.WON);
@@ -45,7 +54,11 @@ function Game() {
   return (
     <>
       <GuessResults guesses={guesses} answer={answer} />
-      <GuessInput disabled={isGameOver} onGuess={handleGuess} />
+      <GuessInput
+        keyStates={keyStates}
+        disabled={isGameOver}
+        onGuess={handleGuess}
+      />
       {isGameOver && (
         <Banner status={gameState}>
           {gameState === GameState.WON ? (
