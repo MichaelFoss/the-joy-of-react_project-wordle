@@ -3,10 +3,19 @@
  * solving algorithm!
  */
 
+import { range } from './utils';
+
 const GuessStates = {
   CORRECT: 'correct',
   INCORRECT: 'incorrect',
   MISPLACED: 'misplaced',
+};
+
+const LetterGuessStates = {
+  CORRECT: 'correct',
+  MISPLACED: 'misplaced',
+  INCORRECT: 'incorrect',
+  UNGUESSED: 'unguessed',
 };
 
 export function checkGuess(guess, answer) {
@@ -59,6 +68,49 @@ export function checkGuess(guess, answer) {
 
   return result;
 }
+
+const ASCII_FOR_A = 'A'.charCodeAt(0);
+export const getInitialKeyStates = () => {
+  const initialStates = range(0, 26)
+    .map((letterNumberOffset) => {
+      const offsetLetter = String.fromCharCode(
+        ASCII_FOR_A + letterNumberOffset
+      );
+      return offsetLetter;
+    })
+    .reduce((keyStates, letter) => {
+      keyStates[letter] = LetterGuessStates.UNGUESSED;
+      return keyStates;
+    }, {});
+  return initialStates;
+};
+
+export const getUpdatedKeyStates = (keyStates, guess, answer) => {
+  // TODO We're calling checkGuess again here,
+  //   when it's already being called elsewhere in the code;
+  //   optimize this so that we only call it once for each guess
+  const result = checkGuess(guess, answer);
+  const newKeyStates = {
+    ...keyStates,
+  };
+  // Promote any letter that had a positive net effect
+  // on the overall solution
+  result?.forEach(({ letter, status }) => {
+    if (status === GuessStates.CORRECT) {
+      newKeyStates[letter] = LetterGuessStates.CORRECT;
+    } else if (
+      status === GuessStates.MISPLACED &&
+      newKeyStates[letter] !== LetterGuessStates.CORRECT
+    ) {
+      newKeyStates[letter] = LetterGuessStates.MISPLACED;
+    } else if (newKeyStates[letter] === LetterGuessStates.UNGUESSED) {
+      newKeyStates[letter] = LetterGuessStates.INCORRECT;
+    }
+  });
+  return newKeyStates;
+};
+
+export const isKeyValidLetter = (key) => /^[A-Z]{1}$/.test(key);
 
 export const KEY_ENTER = 'ENTER';
 export const KEY_BACKSPACE = 'BACKSPACE';
