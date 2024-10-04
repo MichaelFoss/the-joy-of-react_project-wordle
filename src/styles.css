@@ -255,6 +255,66 @@ h1 {
   padding: 6px 12px;
 }
 
+.panel {
+  position: fixed;
+  top: 20%;
+  left: 0; /* Attach the panel to the left side */
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+}
+
+.panelWrapper {
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+  height: auto;
+  position: relative;
+}
+
+.panel.open .panelWrapper {
+  transform: translateX(0);
+}
+
+.panelLabel {
+  background-color: #3498db;
+  color: white;
+  padding: 10px 10px 10px 8px;
+  cursor: pointer;
+  font-weight: bold;
+  writing-mode: vertical-rl;
+  transform-origin: left center;
+  white-space: nowrap;
+  position: absolute;
+  right: -42px;
+  top: 44px;
+  margin-top: -20px;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.panelContent {
+  padding: 20px;
+  max-width: 300px; /* Adjust as necessary */
+  height: auto;
+  overflow: auto;
+}
+
+.panel .panelLabel:hover {
+  background-color: #2980b9;
+}
+
+.statList .statTerm {
+  font-weight: bold;
+}
+
+.statList .statDescription {
+  margin-left: 20px;
+  font-style: italic;
+}
+
 .visually-hidden {
   position: absolute;
   overflow: hidden;

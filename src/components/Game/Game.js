@@ -27,7 +27,7 @@ const GameState = {
   PLAYING: '',
 };
 
-function Game() {
+const Game = ({ onGameOver, onGuess }) => {
   const [answer, setAnswer] = useState(initialAnswer);
   const [guesses, setGuesses] = useState([]);
   const [gameState, setGameState] = useState(GameState.PLAYING);
@@ -35,6 +35,9 @@ function Game() {
   const [isResetting, setIsResetting] = useState(false);
 
   const handleGuess = (guess) => {
+    // Dispatch a guess event
+    onGuess();
+
     // Update the key states
     const nextKeyStates = getUpdatedKeyStates(keyStates, guess, answer);
     setKeyStates(nextKeyStates);
@@ -47,11 +50,13 @@ function Game() {
     // Determine if game has ended
     const isWinner = nextGuesses[nextGuesses.length - 1]?.value === answer;
     if (isWinner) {
+      onGameOver(true, nextGuesses.length);
       setGameState(GameState.WON);
       return;
     }
     const hasNoMoreGuesses = nextGuesses.length === NUM_OF_GUESSES_ALLOWED;
     if (hasNoMoreGuesses) {
+      onGameOver(false);
       setGameState(GameState.LOST);
     }
   };
@@ -95,6 +100,6 @@ function Game() {
       )}
     </>
   );
-}
+};
 
 export default Game;

@@ -13,3 +13,5 @@ export const range = (start, end, step = 1) => {
   }
   return output;
 };
+
+export const roundToOneDecimal = (value) => Math.round(value * 10) / 10;
