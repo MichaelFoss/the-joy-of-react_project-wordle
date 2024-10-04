@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import GuessResults from '../GuessResults/GuessResults';
+import GuessResults from '../GuessResults';
 import GuessInput from '../GuessInput';
 import Banner from '../Banner';
 import WinnerBanner from '../WinnerBanner';
