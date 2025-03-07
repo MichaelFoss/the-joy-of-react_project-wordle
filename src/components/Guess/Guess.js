@@ -1,9 +1,10 @@
 import React, { memo } from 'react';
 import { checkGuess } from '../../game-helpers';
+import { uuid } from '../../utils';
 
 const Guess = memo(({ value, answer }) => {
   const letters = checkGuess(value, answer).map(({ letter, status }) => ({
-    id: crypto.randomUUID(),
+    id: uuid(),
     letter: letter !== ' ' ? letter : ' ',
     status: letter !== ' ' ? status : '',
   }));

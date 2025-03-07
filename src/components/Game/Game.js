@@ -4,6 +4,7 @@ import GuessInput from '../GuessInput';
 import Banner from '../Banner';
 import WinnerBanner from '../WinnerBanner';
 import LoserBanner from '../LoserBanner';
+import { uuid } from '../../utils';
 
 import { sample } from '../../utils';
 import { getInitialKeyStates, getUpdatedKeyStates } from '../../game-helpers';
@@ -44,7 +45,7 @@ const Game = ({ onGameOver, onGuess }) => {
 
     // Update the guesses
     const nextGuesses = [...guesses];
-    nextGuesses.push({ id: crypto.randomUUID(), value: guess });
+    nextGuesses.push({ id: uuid(), value: guess });
     setGuesses(nextGuesses);
 
     // Determine if game has ended

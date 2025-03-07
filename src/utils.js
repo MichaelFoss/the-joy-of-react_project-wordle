@@ -1,3 +1,5 @@
+export const uuid = () => Math.floor(Math.random() * Math.pow(2, 16));
+
 export const sample = (arr) => {
   return arr[Math.floor(Math.random() * arr.length)];
 };
